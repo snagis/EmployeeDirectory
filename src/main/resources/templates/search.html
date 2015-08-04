@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Employee Directory</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+    <link th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.css}" rel="stylesheet"></link>
+    <script th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.4/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+
+        <div class="span4 offset4 well">
+            <table width="100%">
+                <tr width="100%">
+                    <td valign="center" align="left">
+                       <H1>Employee Directory</H1>
+                    </td>
+                    <td align="right">
+                        <form class="form-inline" method="GET" action="" accept-charset="UTF-8" th:action="@{/logout}" >
+                            <!-- Button -->
+                            <div class="form-group">
+                                <button id="logout" name="logout" class="btn btn-primary">Logout</button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="span4 offset4 well">
+
+
+            <!-- Form Name -->
+            <legend>Search Directory</legend>
+
+            <table width="100%">
+                <tr width="100%">
+                    <td>
+                        <!-- Text input-->
+                        <form class="form-inline" method="POST" accept-charset="UTF-8" th:action="@{/search}" th:object="${searchCriteria}" >
+                            <div class="form-group">
+                                <label class="control-label" for="firstname">First Name</label>
+                                <input id="firstname" name="firstname" type="text" placeholder="First Name" th:field="*{firstName}" class="input-xlarge"/>
+                            </div>
+
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="control-label" for="lastName">Last name</label>
+                                <input id="lastName" name="lastName" type="text" placeholder="Last Name" th:field="*{lastName}" class="input-xlarge"/>
+                            </div>
+
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="control-label" for="workPhone">Email</label>
+                                <input id="workPhone" name="workPhone" type="text" placeholder="email@hspring.com" th:field="*{email}" class="input-xlarge"/>
+                            </div>
+
+                            <!-- Button -->
+                            <div class="form-group">
+                                <button id="search" name="search" class="btn btn-primary">Search</button>
+                            </div>
+                        </form>
+                    </td>
+                    <td th:if="${auth == 'ROLE_ADMIN'}" align="right">
+                        <form class="form-inline" method="GET" accept-charset="UTF-8" th:action="@{/create}" >
+                            <!-- Button -->
+                            <div class="form-group">
+                                <button id="newuser" name="newuser" class="btn btn-primary">Create User</button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div th:if="${searchResults != null}">
+            <div class="span4 offset4 well">
+                <legend>Search Result</legend>
+                <th:block th:object="${searchResults}">
+                    <table class="table" th:object="${searchResults}">
+                    <thead>
+                        <tr>
+                        <th>No</th>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                        <th>Email</th>
+                        <th>Title</th>
+                        <th>Location</th>
+                        <th>Work Phone</th>
+                        <th>Home Phone</th>
+                        <th>Cell Phone</th>
+                        <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="emp,iterationStatus  : ${searchResults}">
+                        <td th:text="${iterationStatus.count}"/>
+                        <td th:text="${emp.firstName}"/>
+                        <td th:text="${emp.lastName}"/>
+                        <td th:text="${emp.email}"/>
+                        <td th:text="${emp.title}"/>
+                        <td th:text="${emp.location}"/>
+                        <td th:text="${emp.workPhone}"/>
+                        <td th:text="${emp.homePhone}"/>
+                        <td th:text="${emp.cellPhone}"/>
+                        <td th:if="${auth == 'ROLE_ADMIN'}">
+                            <form class="form-inline" method="POST" action="" accept-charset="UTF-8" th:action="@{/modify}" >
+                                <input type="hidden" name="id" th:value="${emp.id}"/>
+                                <button id="Modify" name="modify" class="btn btn-primary">Modify</button>
+                            </form>
+                        </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

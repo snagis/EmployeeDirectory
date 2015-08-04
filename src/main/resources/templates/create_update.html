@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Employee Directory</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+    <link th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.css}" rel="stylesheet"></link>
+    <script th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.4/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container">
+
+    <div class="row">
+        <div class="span4 offset4 well">
+            <table width="100%">
+                <tr width="100%">
+                    <td valign="center" align="left">
+                        <H1>Employee Directory</H1>
+                    </td>
+                    <td align="right">
+                        <form class="form-inline" method="GET" action="" accept-charset="UTF-8" th:action="@{/logout}" >
+                            <!-- Button -->
+                            <div class="form-group">
+                                <button id="logout" name="logout" class="btn btn-primary">Logout</button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="span4 offset4 well">
+            <form class="form-horizontal"  method="POST" action="" accept-charset="UTF-8" th:action="@{/create}" th:object="${employee}" >
+                <fieldset>
+
+                    <!-- Form Name -->
+                    <legend>User</legend>
+                    <input type="hidden" name="id" th:field="*{id}"/>
+                    <!-- Text input-->
+                    <div class="control-group">
+                        <label class="control-label" for="firstname">First Name</label>
+                        <div class="controls">
+                            <input id="firstname" name="firstname" type="text" placeholder="First Name" th:field="*{firstName}"  class="input-xlarge"/>
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="control-group">
+                        <label class="control-label" for="lastname">Last Name</label>
+                        <div class="controls">
+                            <input id="lastname" name="lastname" type="text" placeholder="Last Name" th:field="*{lastName}"  class="input-xlarge"/>
+
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="control-group">
+                        <label class="control-label" for="location">Location</label>
+                        <div class="controls">
+                            <input id="location" name="location" type="text" placeholder="Location" th:field="*{location}"  class="input-xlarge"/>
+
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="control-group">
+                        <label class="control-label" for="email">Email</label>
+                        <div class="controls">
+                            <input id="email" name="email" type="text" placeholder="name@hspring.com" th:field="*{email}"  class="input-xlarge"/>
+
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="control-group">
+                        <label class="control-label" for="title">Title</label>
+                        <div class="controls">
+                            <input id="title" name="title" type="text" placeholder="title" th:field="*{title}"  class="input-xlarge"/>
+
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="control-group">
+                        <label class="control-label" for="workphone">Work Phone</label>
+                        <div class="controls">
+                           <input id="workphone" name="workphone" type="text" placeholder="888-888-8888" th:field="*{workPhone}"  class="input-xlarge"/>
+
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="control-group">
+                        <label class="control-label" for="cellphone">Cell Phone</label>
+                        <div class="controls">
+                            <input id="cellphone" name="cellphone" type="text" placeholder="888-888-8888" th:field="*{cellPhone}"  class="input-xlarge"/>
+
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="control-group">
+                        <label class="control-label" for="homephone">Home Phone</label>
+                        <div class="controls">
+                            <input id="homephone" name="homephone" type="text" placeholder="888-888-8888" th:field="*{homePhone}" class="input-xlarge"/>
+
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="passwordinput">Password</label>
+                        <div class="controls">
+                            <input id="passwordinput" name="passwordinput" type="password" placeholder="*******" th:field="*{password}" class="input-xlarge"/>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="role">Admin</label>
+                        <div class="controls">
+                            <input id="role" name="role" type="checkbox"  th:field="*{admin}" class="input-xlarge"/>
+                        </div>
+                    </div>
+
+
+                    <!-- Button -->
+                    <div class="control-group">
+                        <label class="control-label" for="submit"></label>
+                        <div class="controls">
+                            <button id="submit" name="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </form>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
