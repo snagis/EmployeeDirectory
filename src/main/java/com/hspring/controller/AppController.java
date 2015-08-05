@@ -1,6 +1,6 @@
 package com.hspring.controller;
 
-import com.hspring.entity.Employee;
+import com.hspring.data.entity.Employee;
 import com.hspring.model.SearchCriteria;
 import com.hspring.service.EmployeeSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -33,7 +32,6 @@ public class AppController {
     @RequestMapping(value={"/create"}, method=RequestMethod.GET)
     public String createUser(Model model) {
         Employee employee = new Employee();
-        System.out.println(" ########## employee " + employee + " ################");
         model.addAttribute("employee", employee);
         return "create_update";
     }
@@ -59,6 +57,7 @@ public class AppController {
     @Secured("ROLE_ADMIN")
     @RequestMapping(value={"/save"}, method = RequestMethod.POST)
     public ModelAndView modifyUser(@Valid final Employee employee, final BindingResult bindingResult){
+
         Employee emp = employeeDirectoryService.findById(employee.getId());
         emp.setFirstName(employee.getFirstName());
         emp.setLastName(employee.getLastName());
@@ -112,6 +111,12 @@ public class AppController {
             mav.setViewName("search");
             return mav;
         }
+
+        if(!searchCriteria.isValid()){
+           mav.setViewName("redirect:search?error");
+           return mav;
+        }
+
         List<Employee> employees = employeeDirectoryService.search(searchCriteria);
         mav.setViewName("search");
         if(!employees.isEmpty()) {

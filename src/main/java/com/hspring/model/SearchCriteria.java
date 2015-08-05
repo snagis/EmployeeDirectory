@@ -9,10 +9,14 @@ public class SearchCriteria {
     public String email;
 
     public boolean searchByLastName(){
-       return ! "".equals(lastName);
+       return lastName != null && ! "".equals(lastName);
     }
 
-    public boolean isMultipleSearchCriteria(){
+    public boolean isValid(){
+       return getSearchConditionCount() > 0;
+    }
+
+    private int getSearchConditionCount(){
         int searchCriteriaCount = 0;
         if(searchByFirstName()) {
             searchCriteriaCount++;
@@ -23,15 +27,19 @@ public class SearchCriteria {
         if(searchByEmail()) {
             searchCriteriaCount++;
         }
-        return searchCriteriaCount > 1;
+        return searchCriteriaCount;
+    }
+
+    public boolean isMultipleSearchCriteria(){
+        return getSearchConditionCount() > 1;
     }
 
     public boolean searchByFirstName(){
-        return ! "".equals(firstName);
+        return firstName != null && ! "".equals(firstName);
     }
 
     public boolean searchByEmail(){
-        return ! "".equals(email);
+        return email != null && ! "".equals(email);
     }
 
     public String getLastName() {

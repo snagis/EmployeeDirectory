@@ -10,7 +10,7 @@ import org.springframework.context.ApplicationContext;
 public class EmployeeDirectoryApplication {
 
     public static void main(String[] args) {
-        ApplicationContext ctx = SpringApplication.run(EmployeeDirectoryApplication.class, args);
+         SpringApplication.run(EmployeeDirectoryApplication.class, args);
     }
 
 }

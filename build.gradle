@@ -38,6 +38,7 @@ dependencies {
     compile('org.webjars:jquery:2.1.4')
 
     testCompile("junit:junit")
+    testCompile("org.mockito:mockito-core:1.+")
 }
 
 task wrapper(type: Wrapper) {

@@ -1,13 +1,12 @@
 package com.hspring.service;
 
-import com.hspring.entity.Employee;
+import com.hspring.data.entity.Employee;
+import com.hspring.data.EmployeeRepository;
 import com.hspring.model.SearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,8 +16,12 @@ import java.util.List;
 @Component
 public class EmployeeSearchService {
 
-    @Autowired
     EmployeeRepository repository;
+
+    @Autowired
+    public EmployeeSearchService(EmployeeRepository repository){
+        this.repository = repository;
+    }
 
     public void save(Employee employee){
         repository.save(employee);
@@ -29,6 +32,10 @@ public class EmployeeSearchService {
     }
 
     public List<Employee> search(SearchCriteria searchCriteria){
+        //if user selects multiple fields to search on, we retrieve all
+        // the records with on a single field and filter out the
+        // records locally. Keeps db queries simple.
+
         List<Employee> employees = new ArrayList<Employee>();
         if(searchCriteria.searchByEmail()) {
             Employee employee = repository.findByEmail(searchCriteria.getEmail());
@@ -44,7 +51,6 @@ public class EmployeeSearchService {
                 employees.addAll(employeeSearchResults);
             }
             return filterByAdditionalCriteria(employees, searchCriteria);
-
         }
 
         if(searchCriteria.searchByFirstName()) {
@@ -68,16 +74,21 @@ public class EmployeeSearchService {
             if(searchCriteria.searchByLastName()){
                 if(!searchCriteria.getLastName().equals(employee.getLastName())){
                    iterator.remove();
+                    continue;
                 }
             }
-            else if(searchCriteria.searchByFirstName()){
+
+            if(searchCriteria.searchByFirstName()){
                 if(!searchCriteria.getFirstName().equals(employee.getFirstName())){
                     iterator.remove();
+                    continue;
                 }
             }
-            else if(searchCriteria.searchByEmail()){
+
+            if(searchCriteria.searchByEmail()){
                 if(!searchCriteria.getEmail().equals(employee.getEmail())){
                     iterator.remove();
+                    continue;
                 }
             }
         }

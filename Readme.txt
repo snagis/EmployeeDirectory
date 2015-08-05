@@ -1,6 +1,7 @@
 Stack:
-  Spring Boot + Spring JPA
+  Spring Boot + Spring JPA + Spring MVC
   Thymeleaf for templating
+  Bootstrap.js for providing basic styling
   MySQL as data store hosted on Amazon RDS
 
 To Run:
@@ -15,13 +16,15 @@ Working Application is hosted on an Amazon EC2 instance
 
 Additional Notes:
   ./gradlew bootRun is all you need to do to run the app. This downloads
-  all the required deependencies and runs the project. But if you 
-  are behind firewall, you may need to set proxy settings in gradle.properties
-  in the project directory.
+  all the required dependencies and runs the project. The application can be
+  accessed at localhost:8080. But if you are behind firewall, you may need 
+  to set proxy settings in gradle.properties in the project directory.
 
-  Also, in case of firewall blocking you to reach MySql instances, you may want to
-  try following command instead...
+  Also, in case of firewall blocking you to reach MySql instances on RDS, you may 
+  want to try following command instead...
 
   ./gradlew bootRun -PjvmArgs="-Dhttp.proxyHost=<your.proxy.host> -Dhttp.proxyPort=<proxy-port>"
+
+  Other alternative is to create db locally and modify application.properties.
 
 

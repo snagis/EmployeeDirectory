@@ -1,4 +1,4 @@
-package com.hspring.entity;
+package com.hspring.data.entity;
 
 
 import javax.persistence.Column;
