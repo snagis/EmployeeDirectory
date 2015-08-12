@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.Valid;
 
 @Entity
 @Table(name = "employee")
@@ -46,9 +47,6 @@ public class Employee {
 
     @Column(name = "location", nullable = false)
     private String location;
-
-    @Column(name = "enabled", nullable = false)
-    private int enabled;
 
     public Long getId() {
         return id;
@@ -122,14 +120,6 @@ public class Employee {
         this.location = location;
     }
 
-    public int getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(int enabled) {
-        this.enabled = enabled;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -157,7 +147,6 @@ public class Employee {
 
         Employee employee = (Employee) o;
 
-        if (enabled != employee.enabled) return false;
         if (id != null ? !id.equals(employee.id) : employee.id != null) return false;
         if (email != null ? !email.equals(employee.email) : employee.email != null) return false;
         if (password != null ? !password.equals(employee.password) : employee.password != null) return false;
@@ -185,7 +174,6 @@ public class Employee {
         result = 31 * result + (homePhone != null ? homePhone.hashCode() : 0);
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (location != null ? location.hashCode() : 0);
-        result = 31 * result + enabled;
         return result;
     }
 
@@ -203,7 +191,6 @@ public class Employee {
                 ", homePhone='" + homePhone + '\'' +
                 ", title='" + title + '\'' +
                 ", location='" + location + '\'' +
-                ", enabled=" + enabled +
                 '}';
     }
 
@@ -214,6 +201,4 @@ public class Employee {
     public void setRole(String role) {
         this.role = role;
     }
-
-
 }

@@ -17,10 +17,10 @@ public class AuthenticationSecurity extends
         GlobalAuthenticationConfigurerAdapter {
 
     @Autowired
-    private UserAuthService users;
+    private UserAuthService userAuthService;
 
     @Override
     public void init(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(users);
+        auth.userDetailsService(userAuthService);
     }
 }

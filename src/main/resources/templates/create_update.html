@@ -17,22 +17,7 @@
 <div class="container">
 
     <div class="row">
-<!--        <div class="span4 offset4 well">
-            <table width="100%">
-                <tr width="100%">
-                    <td valign="center" align="left">
-                        <H1>Employee Directory</H1>
-                    </td>
-                    <td align="right">
-                        <form class="form-inline" method="GET" action="" accept-charset="UTF-8" th:action="@{/logout}" >
-                            <div class="form-group">
-                                <button id="logout" name="logout" class="btn btn-primary">Logout</button>
-                            </div>
-                        </form>
-                    </td>
-                </tr>
-            </table>
-        </div> -->
+
         <div class="span4 offset4 well">
             <div class="row">
                 <div class="col-xs-12 col-md-8">
@@ -132,8 +117,11 @@
 
                     <div class="form-group">
                         <label class="control-label" for="passwordinput">Password</label>
-                        <div class="col-sm-5">
+                        <div class="col-sm-5"  th:if="${isUpdate == false}">
                             <input id="passwordinput" name="passwordinput" type="password" placeholder="*******" th:field="*{password}" class="form-control" required="true"/>
+                        </div>
+                        <div class="col-sm-5"  th:if="${isUpdate == true}">
+                            <input id="passwordinput" name="passwordinput" type="password" placeholder="*******" th:field="*{password}" class="form-control"/>
                         </div>
                     </div>
 

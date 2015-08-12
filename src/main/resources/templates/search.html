@@ -117,11 +117,17 @@
                         <td th:text="${emp.homePhone}"/>
                         <td th:text="${emp.cellPhone}"/>
                         <td th:if="${auth == 'ROLE_ADMIN'}">
-                            <form class="form-inline" method="POST" action="" accept-charset="UTF-8" th:action="@{/modify}" >
+                            <form id="modifyForm" class="form-inline" method="POST" action="" accept-charset="UTF-8" th:action="@{/modify}" >
                                 <input type="hidden" name="id" th:value="${emp.id}"/>
-                                <button id="Modify" name="modify" class="btn btn-primary">Modify</button>
+                                <button id="modify" name="modify" class="btn btn-primary">Modify</button>
                             </form>
                         </td>
+                         <td th:if="${auth == 'ROLE_ADMIN'}">
+                                <form id="deleteForm" class="form-inline" method="POST" action="" accept-charset="UTF-8" th:action="@{/delete}" >
+                                    <input type="hidden" name="id" th:value="${emp.id}"/>
+                                    <button id="delete" name="delete" class="btn btn-primary">Delete</button>
+                                </form>
+                            </td>
                         </tr>
                     </tbody>
                     </table>
@@ -129,6 +135,18 @@
             </div>
         </div>
     </div>
+
+<!--    <script>
+        $('#modify').on("click",function() {
+            var result = confirm("You sure you want to modify!");
+            if (result == true) {
+                $('#modifyForm').submit();
+            }
+            else{
+                return false;
+            }
+        });
+    </script> -->
 </div>
 </body>
 </html>

@@ -30,67 +30,83 @@ public class AppController {
 
     @Secured("ROLE_ADMIN")
     @RequestMapping(value={"/create"}, method=RequestMethod.GET)
-    public String createUser(Model model) {
+    public ModelAndView createUser() {
+        ModelAndView modelAndView = new ModelAndView();
         Employee employee = new Employee();
-        model.addAttribute("employee", employee);
-        return "create_update";
+        modelAndView.addObject("employee", employee);
+        modelAndView.addObject("isUpdate", false);
+        modelAndView.setViewName("create_update");
+        return modelAndView;
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({"ROLE_ADMIN"})
     @RequestMapping(value={"/create"}, method=RequestMethod.POST)
     public String createUser(@Valid final Employee employee, final BindingResult bindingResult) {
         employeeDirectoryService.save(employee);
         return "redirect:/search";
     }
 
+    @Secured({"ROLE_ADMIN"})
+    @RequestMapping(value={"/delete"}, method=RequestMethod.POST)
+    public String deleteUser(@RequestParam Long id) {
+        employeeDirectoryService.delete(id);
+        return "redirect:/search";
+    }
 
     @Secured("ROLE_ADMIN")
-    @RequestMapping(value={"/modify"}, method = RequestMethod.POST)
+    @RequestMapping(value={"/modify"}, method = RequestMethod.GET)
     public ModelAndView modifyUser(@RequestParam Long id) {
-        Employee employee = employeeDirectoryService.findById(id);
-        ModelAndView mav = new ModelAndView();
-        mav.addObject("employee", employee);
-        mav.setViewName("create_update");
-        return mav;
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        boolean allowInteraction = false;
+
+        Collection<GrantedAuthority> authorities = user.getAuthorities();
+        for(GrantedAuthority authority: authorities) {
+            String auth = authority.getAuthority();
+            if ("ROLE_ADMIN".equals(auth)) {
+                allowInteraction = true;
+            }
+        }
+        if(allowInteraction) {
+            Employee employee = employeeDirectoryService.findById(id);
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.addObject("employee", employee);
+            modelAndView.addObject("isUpdate", true);
+            modelAndView.setViewName("create_update");
+            return modelAndView;
+        }
+        else{
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.setViewName("redirect:/search");
+            return modelAndView;
+        }
     }
 
     @Secured("ROLE_ADMIN")
     @RequestMapping(value={"/save"}, method = RequestMethod.POST)
-    public ModelAndView modifyUser(@Valid final Employee employee, final BindingResult bindingResult){
+    public ModelAndView save(@Valid final Employee employee, final BindingResult bindingResult){
 
-        Employee emp = employeeDirectoryService.findById(employee.getId());
-        emp.setFirstName(employee.getFirstName());
-        emp.setLastName(employee.getLastName());
-        emp.setEmail(employee.getEmail());
-        emp.setLocation(employee.getLocation());
-        emp.setTitle(employee.getTitle());
-        emp.setCellPhone(employee.getCellPhone());
-        emp.setWorkPhone(employee.getWorkPhone());
-        emp.setHomePhone(employee.getHomePhone());
-        emp.setRole("ROLE_USER");
-
-        String newPasswd = employee.getPassword();
-        if(newPasswd != null && !"".equals(newPasswd)){
-           emp.setPassword(newPasswd);
+        ModelAndView modelAndView = new ModelAndView();
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("redirect:search?error");
+            return modelAndView;
         }
-        employeeDirectoryService.save(emp);
 
-        ModelAndView mav = new ModelAndView();
+        employeeDirectoryService.update(employee);
+
         SearchCriteria searchCriteria = new SearchCriteria();
-        mav.addObject("searchCriteria", searchCriteria);
-        mav.setViewName("search");
-        return mav;
+        modelAndView.addObject("searchCriteria", searchCriteria);
+        modelAndView.setViewName("search");
+        return modelAndView;
     }
 
     @RequestMapping(value={"/","/search"}, method=RequestMethod.GET)
     public ModelAndView loginSubmit(Model model) {
-        ModelAndView mav = new ModelAndView();
-        mav.addObject("searchCriteria", new SearchCriteria());
-
-        addUserAuth(mav);
-
-        mav.setViewName("search");
-        return mav;
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("searchCriteria", new SearchCriteria());
+        addUserAuth(modelAndView);
+        modelAndView.setViewName("search");
+        return modelAndView;
     }
 
     private void addUserAuth(ModelAndView mav) {
@@ -108,7 +124,7 @@ public class AppController {
     public ModelAndView searchSubmit(@Valid final SearchCriteria searchCriteria, final BindingResult bindingResult) {
         ModelAndView mav = new ModelAndView();
         if (bindingResult.hasErrors()) {
-            mav.setViewName("search");
+            mav.setViewName("redirect:search?error");
             return mav;
         }
 
