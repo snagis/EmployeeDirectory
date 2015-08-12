@@ -22,7 +22,7 @@
                     <h4 class="modal-title">Login</h4>
                 </div>
 
-                <div th:if="${param.error}">
+                <div th:if="${param.error}" style="color:#FF0000">
                     <br/>Invalid username and password.<br/>
                 </div>
                 <div th:if="${param.logout}">
@@ -35,20 +35,20 @@
                         <div class="form-group">
                             <label class="col-xs-3 control-label">Email</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" name="username" placeholder="email@hspring.com" />
+                                <input type="email" id="username" class="form-control" name="username" placeholder="email@hspring.com" required="true"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-xs-3 control-label">Password</label>
                             <div class="col-xs-5">
-                                <input type="password" class="form-control" name="password" placeholder="password" />
+                                <input type="password" id="password" class="form-control" name="password" placeholder="password" required="true"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-xs-5 col-xs-offset-3">
-                                <button type="submit" class="btn btn-primary">Login</button>
+                                <button type="submit" name="submit" class="btn btn-primary">Login</button>
                             </div>
                         </div>
                     </form>
@@ -57,9 +57,9 @@
         </div>
     </div>
 
-    <script>
+ <script>
 
-    $(document).ready(function() {
+   $(document).ready(function() {
         $('#loginForm').validate({
             rules: {
                 username: {

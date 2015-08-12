@@ -17,21 +17,23 @@
     <div class="row">
 
         <div class="span4 offset4 well">
-            <table width="100%">
-                <tr width="100%">
-                    <td valign="center" align="left">
-                       <H1>Employee Directory</H1>
-                    </td>
-                    <td align="right">
-                        <form class="form-inline" method="GET" action="" accept-charset="UTF-8" th:action="@{/logout}" >
-                            <!-- Button -->
-                            <div class="form-group">
-                                <button id="logout" name="logout" class="btn btn-primary">Logout</button>
-                            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-8">
+                    <H1>Employee Directory</H1>
+                </div>
+                <div class="col-xs-6 col-md-4">
+                    <div class="col-xs-4 col-md-3">
+                        <form class="form-inline" method="GET" action="" accept-charset="UTF-8" th:action="@{/search}" >
+                            <button id="home" name="home" class="btn btn-primary">Home</button>
                         </form>
-                    </td>
-                </tr>
-            </table>
+                    </div>
+                    <div class="col-xs-4 col-md-3">
+                        <form class="form-inline" method="GET" action="" accept-charset="UTF-8" th:action="@{/logout}" >
+                            <button id="logout" name="logout" class="btn btn-primary">Logout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="span4 offset4 well">
@@ -39,6 +41,9 @@
 
             <!-- Form Name -->
             <legend>Search Directory</legend>
+            <div th:if="${param.error}" style="color:#FF0000">
+                You must enter atleast one search condition<br/><br/>
+            </div>
 
             <table width="100%">
                 <tr width="100%">
@@ -47,24 +52,25 @@
                         <form class="form-inline" method="POST" accept-charset="UTF-8" th:action="@{/search}" th:object="${searchCriteria}" >
                             <div class="form-group">
                                 <label class="control-label" for="firstname">First Name</label>
-                                <input id="firstname" name="firstname" type="text" placeholder="First Name" th:field="*{firstName}" class="input-xlarge"/>
+                                <input id="firstname" name="firstname" type="text" placeholder="First Name" th:field="*{firstName}" class="form-control"/>
                             </div>
 
                             <!-- Text input-->
                             <div class="form-group">
                                 <label class="control-label" for="lastName">Last name</label>
-                                <input id="lastName" name="lastName" type="text" placeholder="Last Name" th:field="*{lastName}" class="input-xlarge"/>
+                                <input id="lastName" name="lastName" type="text" placeholder="Last Name" th:field="*{lastName}" class="form-control"/>
                             </div>
 
                             <!-- Text input-->
                             <div class="form-group">
-                                <label class="control-label" for="workPhone">Email</label>
-                                <input id="workPhone" name="workPhone" type="text" placeholder="email@hspring.com" th:field="*{email}" class="input-xlarge"/>
+                                <label class="control-label" for="email">Email</label>
+                                <input id="email" name="email" type="email" placeholder="email@hspring.com" th:field="*{email}" class="form-control"/>
                             </div>
 
                             <!-- Button -->
                             <div class="form-group">
-                                <button id="search" name="search" class="btn btn-primary">Search</button>
+                                <button id="search" name="search" class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>  Search</button>
                             </div>
                         </form>
                     </td>
@@ -111,11 +117,17 @@
                         <td th:text="${emp.homePhone}"/>
                         <td th:text="${emp.cellPhone}"/>
                         <td th:if="${auth == 'ROLE_ADMIN'}">
-                            <form class="form-inline" method="POST" action="" accept-charset="UTF-8" th:action="@{/modify}" >
+                            <form id="modifyForm" class="form-inline" method="POST" action="" accept-charset="UTF-8" th:action="@{/modify}" >
                                 <input type="hidden" name="id" th:value="${emp.id}"/>
-                                <button id="Modify" name="modify" class="btn btn-primary">Modify</button>
+                                <button id="modify" name="modify" class="btn btn-primary">Modify</button>
                             </form>
                         </td>
+                         <td th:if="${auth == 'ROLE_ADMIN'}">
+                                <form id="deleteForm" class="form-inline" method="POST" action="" accept-charset="UTF-8" th:action="@{/delete}" >
+                                    <input type="hidden" name="id" th:value="${emp.id}"/>
+                                    <button id="delete" name="delete" class="btn btn-primary">Delete</button>
+                                </form>
+                            </td>
                         </tr>
                     </tbody>
                     </table>
@@ -123,6 +135,18 @@
             </div>
         </div>
     </div>
+
+<!--    <script>
+        $('#modify').on("click",function() {
+            var result = confirm("You sure you want to modify!");
+            if (result == true) {
+                $('#modifyForm').submit();
+            }
+            else{
+                return false;
+            }
+        });
+    </script> -->
 </div>
 </body>
 </html>
