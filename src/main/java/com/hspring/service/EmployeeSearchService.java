@@ -52,67 +52,8 @@ public class EmployeeSearchService {
     }
 
     public List<Employee> search(SearchCriteria searchCriteria){
-        //if user selects multiple fields to search on, we retrieve all
-        // the records with on a single field and filter out the
-        // records locally. Keeps db queries simple.
-
-        List<Employee> employees = new ArrayList<Employee>();
-        if(searchCriteria.searchByEmail()) {
-            Employee employee = repository.findByEmail(searchCriteria.getEmail());
-            if(employee != null){
-                employees.add(employee);
-            }
-            return filterByAdditionalCriteria(employees, searchCriteria);
-        }
-
-        else if(searchCriteria.searchByLastName()){
-            List<Employee> employeeSearchResults = repository.findByLastName(searchCriteria.getLastName());
-            if(employeeSearchResults != null){
-                employees.addAll(employeeSearchResults);
-            }
-            return filterByAdditionalCriteria(employees, searchCriteria);
-        }
-
-        if(searchCriteria.searchByFirstName()) {
-            List<Employee> employeeSearchResults = repository.findByFirstName(searchCriteria.getFirstName());
-            if(employeeSearchResults != null){
-                employees.addAll(employeeSearchResults);
-            }
-            return filterByAdditionalCriteria(employees,searchCriteria);
-        }
-
-        return employees;
-    }
-
-    private List<Employee> filterByAdditionalCriteria(List<Employee> employees, SearchCriteria searchCriteria) {
-        if(!searchCriteria.isMultipleSearchCriteria()){
-            return employees;
-        }
-
-        for (Iterator<Employee> iterator = employees.iterator(); iterator.hasNext();) {
-            Employee employee = iterator.next();
-            if(searchCriteria.searchByLastName()){
-                if(!searchCriteria.getLastName().equals(employee.getLastName())){
-                   iterator.remove();
-                    continue;
-                }
-            }
-
-            if(searchCriteria.searchByFirstName()){
-                if(!searchCriteria.getFirstName().equals(employee.getFirstName())){
-                    iterator.remove();
-                    continue;
-                }
-            }
-
-            if(searchCriteria.searchByEmail()){
-                if(!searchCriteria.getEmail().equals(employee.getEmail())){
-                    iterator.remove();
-                    continue;
-                }
-            }
-        }
-        return employees;
+	String searchTerm = searchCriteria.getSearchTerm();
+	return repository.findByFirstNameOrLastNameOrEmail(searchTerm, searchTerm, searchTerm);
     }
 
     public void delete(Long employeeId) {

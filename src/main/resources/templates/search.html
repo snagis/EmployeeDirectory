@@ -50,21 +50,9 @@
                     <td>
                         <!-- Text input-->
                         <form class="form-inline" method="POST" accept-charset="UTF-8" th:action="@{/search}" th:object="${searchCriteria}" >
-                            <div class="form-group">
-                                <label class="control-label" for="firstname">First Name</label>
-                                <input id="firstname" name="firstname" type="text" placeholder="First Name" th:field="*{firstName}" class="form-control"/>
-                            </div>
-
-                            <!-- Text input-->
-                            <div class="form-group">
-                                <label class="control-label" for="lastName">Last Name</label>
-                                <input id="lastName" name="lastName" type="text" placeholder="Last Name" th:field="*{lastName}" class="form-control"/>
-                            </div>
-
-                            <!-- Text input-->
-                            <div class="form-group">
-                                <label class="control-label" for="email">Email</label>
-                                <input id="email" name="email" type="email" placeholder="email@hspring.com" th:field="*{email}" class="form-control"/>
+                            <div class="form-group" >
+                                <label class="control-label" for="searchTerm">Search  </label>
+                                <input id="searchTerm" name="searchTerm" type="text" placeholder="First Name or Last Name or Email" th:field="*{searchTerm}" class="form-control" size="60" />
                             </div>
 
                             <!-- Button -->

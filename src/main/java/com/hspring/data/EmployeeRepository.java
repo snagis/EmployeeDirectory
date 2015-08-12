@@ -13,15 +13,13 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
     List<Employee> findByFirstName(String firstName);
 
-//    List<Employee> findByFirstNameAndLastName(String firstName, String lastName);
-
-//    List<Employee> findByFirstNameOrEmail(String field);
+    List<Employee> findByFirstNameOrLastNameOrEmail(String firstName, String lastName, String email);
 
     List<Employee> findByLastName(String lastName);
 
     Employee findByEmail(String email);
 
-    List<Employee>findByWorkPhone(String workPhone);
+    List<Employee> findByWorkPhone(String workPhone);
 
     Employee findById(Long id);
 }

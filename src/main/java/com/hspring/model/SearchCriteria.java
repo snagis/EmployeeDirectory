@@ -7,13 +7,23 @@ public class SearchCriteria {
     public String firstName;
     public String lastName;
     public String email;
+    public String searchTerm;
+
+
+    public void setSearchTerm(String searchTerm){
+	this.searchTerm = searchTerm;
+    }
+
+    public String getSearchTerm(){
+	return this.searchTerm;
+    }
 
     public boolean searchByLastName(){
        return lastName != null && ! "".equals(lastName);
     }
 
     public boolean isValid(){
-       return getSearchConditionCount() > 0;
+       return getSearchConditionCount() > 0 || (searchTerm != null && !searchTerm.equals(""));
     }
 
     private int getSearchConditionCount(){
