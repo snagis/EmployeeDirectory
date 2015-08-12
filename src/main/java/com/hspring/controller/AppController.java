@@ -54,32 +54,16 @@ public class AppController {
     }
 
     @Secured("ROLE_ADMIN")
-    @RequestMapping(value={"/modify"}, method = RequestMethod.GET)
+    @RequestMapping(value={"/modify"}, method = RequestMethod.POST)
     public ModelAndView modifyUser(@RequestParam Long id) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        boolean allowInteraction = false;
-
-        Collection<GrantedAuthority> authorities = user.getAuthorities();
-        for(GrantedAuthority authority: authorities) {
-            String auth = authority.getAuthority();
-            if ("ROLE_ADMIN".equals(auth)) {
-                allowInteraction = true;
-            }
-        }
-        if(allowInteraction) {
-            Employee employee = employeeDirectoryService.findById(id);
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.addObject("employee", employee);
-            modelAndView.addObject("isUpdate", true);
-            modelAndView.setViewName("create_update");
-            return modelAndView;
-        }
-        else{
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.setViewName("redirect:/search");
-            return modelAndView;
-        }
+        Employee employee = employeeDirectoryService.findById(id);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("employee", employee);
+        modelAndView.addObject("isUpdate", true);
+        modelAndView.setViewName("create_update");
+        return modelAndView;
     }
 
     @Secured("ROLE_ADMIN")
